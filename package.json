@@ -6,6 +6,14 @@
   "scripts": {
     "test": "mocha tests"
   },
+  "eslintConfig": {
+    "env": {
+      "jquery": true,
+      "mocha": true,
+      "node": true,
+      "es6": true
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NewEvolution/thermostats.git"
