@@ -1,0 +1,26 @@
+{
+  "name": "thermostats",
+  "description": "Home thermostat survey & graphing application",
+  "main": "app.js",
+  "authors": [
+    "Ryan Tanay <rtanay@gmail.com> (http://portfolio.ryantanay.com/)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "thermostat",
+    "heating",
+    "cooling",
+    "AC",
+    "energy"
+  ],
+  "homepage": "https://github.com/NewEvolution/thermostats",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor",
+    "test",
+    "tests"
+  ]
+}
