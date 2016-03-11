@@ -1,0 +1,44 @@
+{
+  "name": "thermostats",
+  "version": "1.0.0",
+  "description": "Home thermostat survey & graphing application",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewEvolution/thermostats.git"
+  },
+  "keywords": [
+    "thermostat",
+    "heating",
+    "cooling",
+    "AC",
+    "energy"
+  ],
+  "author": "Ryan Tanay <rtanay@gmail.com> (http://portfolio.ryantanay.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NewEvolution/thermostats/issues"
+  },
+  "homepage": "https://github.com/NewEvolution/thermostats#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.8",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "bower": "^1.7.7",
+    "connect-redis": "^3.0.2",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "favicon": "0.0.2",
+    "jade": "^1.11.0",
+    "mongoose": "^4.4.6",
+    "node-sass-middleware": "^0.9.7"
+  }
+}
