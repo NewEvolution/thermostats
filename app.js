@@ -34,7 +34,7 @@ const logger = require('./lib/logger');
 app.use(logger);
 
 const date = new Date();
-app.locals.title = "Evernode";
+app.locals.title = "ThermoStats";
 app.locals.year = date.getFullYear();
 
 app.set('view engine', 'jade');
@@ -44,10 +44,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 const routes = require('./routes/');
 app.use(routes);
 
-app.get('*', (req, res) => {
-  res.render('login');
-});
-
 const mongoose = require('mongoose');
 const localMongoPort = 27017;
 const MONGO_PORT = process.env.MONGO_PORT || localMongoPort;
@@ -55,7 +51,7 @@ const MONGO_HOST = process.env.MONGO_HOST || 'localhost';
 const MONGO_USER = process.env.MONGO_USER || '';
 const MONGO_PASS = process.env.MONGO_PASS || '';
 const MONGO_AUTH = MONGO_USER ? `${MONGO_USER}:${MONGO_PASS}@` : '';
-const MONGO_URL = `mongodb://${MONGO_AUTH}${MONGO_HOST}:${MONGO_PORT}/evernode`;
+const MONGO_URL = `mongodb://${MONGO_AUTH}${MONGO_HOST}:${MONGO_PORT}/thermostats`;
 mongoose.connect(MONGO_URL);
 
 const localPort = 3000;
