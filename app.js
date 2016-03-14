@@ -19,8 +19,12 @@ app.use(session({
 const logger = require('./lib/logger');
 app.use(logger);
 
-const routes = require('./routes/');
-app.use(routes);
+const apiR = require('./routes/api');
+app.use(apiR);
+
+app.get('*', (req, res) => {
+  res.redirect('https://www.google.com');
+});
 
 const mongoose = require('mongoose');
 const localMongoPort = 27017;
