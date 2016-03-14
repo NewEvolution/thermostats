@@ -25,6 +25,9 @@ app.use(logger);
 const apiR = require('./routes/api');
 app.use(apiR);
 
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('*', (req, res) => {
   res.redirect('https://www.google.com');
 });
