@@ -1,12 +1,7 @@
 'use strict';
 
-const favicon = require('favicon'); // eslint-disable-line no-unused-vars
-
 const express = require('express');
 const app = express();
-
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
 
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
@@ -21,25 +16,8 @@ app.use(session({
   })
 }));
 
-const path = require('path');
-const nodeSass = require('node-sass-middleware');
-app.use(nodeSass({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: true,
-  sourceMap: true
-}));
-
 const logger = require('./lib/logger');
 app.use(logger);
-
-const date = new Date();
-app.locals.title = "ThermoStats";
-app.locals.year = date.getFullYear();
-
-app.set('view engine', 'jade');
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 const routes = require('./routes/');
 app.use(routes);

@@ -34,7 +34,6 @@
     "connect-redis": "^3.0.2",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "favicon": "0.0.2",
     "mongoose": "^4.4.6"
   }
 }
