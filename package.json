@@ -15,7 +15,8 @@
       "jquery": true,
       "node": true,
       "es6": true
-    }
+    },
+    "extends": "/Users/ryan/.eslint/personal.json"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,9 @@
     "connect-redis": "^3.0.2",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
-    "mongoose": "^4.4.6"
+    "sequelize": "^3.19.3"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^2.3.1"
   }
 }
