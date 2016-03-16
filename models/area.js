@@ -1,11 +1,17 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var area = sequelize.define('area', {
+
+module.exports = (sequelize, DataTypes) => {
+  const area = sequelize.define('area', {
     code: DataTypes.INTEGER
   }, {
     classMethods: {
-      associate: function(models) {
-        // associations can be defined here
+      associate: (models) => {
+        area.belongsTo(models.state, {
+          foreignKey: {
+            allowNull: false
+          }
+        });
+        area.hasMany(models.temp);
       }
     }
   });
