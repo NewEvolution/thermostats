@@ -40,6 +40,8 @@
     "connect-redis": "^3.0.2",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "pg": "^4.5.1",
+    "pg-hstore": "^2.3.2",
     "sequelize": "^3.19.3"
   },
   "devDependencies": {
