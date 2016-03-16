@@ -1,6 +1,7 @@
 'use strict';
+
 module.exports = {
-  up: function(queryInterface, Sequelize) {
+  up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('states', {
       id: {
         allowNull: false,
@@ -9,10 +10,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: Sequelize.VARCHAR(20)
+        type: Sequelize.VARCHAR(20) // eslint-disable-line no-magic-numbers
       },
       abbr: {
-        type: Sequelize.VARCHAR(2)
+        type: Sequelize.VARCHAR(2) // eslint-disable-line no-magic-numbers
       },
       createdAt: {
         allowNull: false,
@@ -24,7 +25,7 @@ module.exports = {
       }
     });
   },
-  down: function(queryInterface, Sequelize) {
+  down: (queryInterface) => {
     return queryInterface.dropTable('states');
   }
 };
