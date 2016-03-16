@@ -16,10 +16,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       noheat: {
-        type: Sequelize.BOOL
+        type: Sequelize.BOOLEAN
       },
       nocool: {
-        type: Sequelize.BOOL
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
