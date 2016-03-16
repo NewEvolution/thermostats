@@ -1,20 +1,20 @@
 {
   "development": {
-    "username": "root",
+    "username": "ryan",
     "password": null,
     "database": "thermostats",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
-    "username": "root",
+    "username": "ryan",
     "password": null,
     "database": "thermostats",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
+    "username": "ryan",
     "password": null,
     "database": "thermostats",
     "host": "127.0.0.1",
