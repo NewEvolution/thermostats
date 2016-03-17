@@ -1,22 +1,22 @@
 'use strict';
 
+const db = {};
 const fs = require('fs');
 const path = require('path');
-const Sequelize = require('sequelize');
 const basename = path.basename(module.filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
-let sequelize;
 
-if (config.use_env_constiable) {
-  sequelize = new Sequelize(process.env[config.use_env_constiable]);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+const localPostgresPort = 5432;
+const POSTGRES_PORT = process.env.POSTGRES_PORT || localPostgresPort;
+const POSTGRES_HOST = process.env.POSTGRES_HOST || 'localhost';
+const POSTGRES_USER = process.env.POSTGRES_USER || 'ryan';
+const POSTGRES_PASS = process.env.POSTGRES_PASS || '';
+const POSTGRES_DATA = process.env.POSTGRES_DATA || 'thermostats'
+const POSTGRES_AUTH = POSTGRES_USER ? `${POSTGRES_USER}:${POSTGRES_PASS}@` : '';
+const POSTGRES_URL = `postgres://${POSTGRES_AUTH}${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATA}`;
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize(POSTGRES_URL);
 
-fs
-  .readdirSync(__dirname)
+fs.readdirSync(__dirname)
   .filter((file) => {
     return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'; // eslint-disable-line no-magic-numbers
   })

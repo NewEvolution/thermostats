@@ -3,20 +3,9 @@
 const express = require('express');
 const app = express();
 
-const localPostgresPort = 5432;
-const POSTGRES_PORT = process.env.POSTGRES_PORT || localPostgresPort;
-const POSTGRES_HOST = process.env.POSTGRES_HOST || 'localhost';
-const POSTGRES_USER = process.env.POSTGRES_USER || 'ryan';
-const POSTGRES_PASS = process.env.POSTGRES_PASS || '';
-const POSTGRES_DATA = process.env.POSTGRES_DATA || 'thermostats'
-const POSTGRES_AUTH = POSTGRES_USER ? `${POSTGRES_USER}:${POSTGRES_PASS}@` : '';
-const POSTGRES_URL = `postgres://${POSTGRES_AUTH}${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATA}`;
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(POSTGRES_URL); // eslint-disable-line no-unused-vars
-
 const db = require('./models/');
 db.sequelize.sync().then(() => {
-  console.log('Database connected'); // eslint-disable-line no-console
+  console.log('DB synchronized'); // eslint-disable-line no-console
 });
 
 const session = require('express-session');
