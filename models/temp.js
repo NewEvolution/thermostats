@@ -2,6 +2,7 @@
 
 module.exports = (sequelize, DataTypes) => {
   const temp = sequelize.define('temp', {
+    sessionID: DataTypes.STRING(32), // eslint-disable-line no-magic-numbers
     heat: DataTypes.INTEGER,
     cool: DataTypes.INTEGER,
     noheat: DataTypes.BOOLEAN,

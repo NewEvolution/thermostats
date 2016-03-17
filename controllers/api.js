@@ -1,6 +1,7 @@
 'use strict'
 
 const db = require('../models/');
+const request = require('superagent');
 
 module.exports = {
   index (req, res) {
@@ -10,15 +11,23 @@ module.exports = {
   },
 
   new (req, res) {
-    const sentTemp = req.body;
-    db.temp.findOrCreate({where: {
-      heat: sentTemp.heat,
-      cool: sentTemp.cool,
-      noheat: sentTemp.noheat,
-      nocool: sentTemp.nocool
-    }})
-    .spread((temp, created) => {
-      res.send({created: created});
+    const zip = req.body.zip;
+    const zipapi = `https://api.zippopotam.us/us/${zip}`
+    request.get(zipapi).end((err, body) => {
+      if (err) throw err;
+      db.temp.findOrCreate({
+        where: {
+          sessionID: req.sessionID
+        }, defaults: {
+          heat: req.body.heat,
+          cool: req.body.cool,
+          noheat: req.body.noheat,
+          nocool: req.body.nocool
+        }
+      })
+      .spread((temp, created) => {
+        res.send({created: created, body: body});
+      });
     });
   }
 }
