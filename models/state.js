@@ -5,9 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING(20), // eslint-disable-line no-magic-numbers
     abbr: DataTypes.STRING(2) // eslint-disable-line no-magic-numbers
   }, {
+    timestamps: false,
     classMethods: {
       associate: (models) => {
-        state.hasMany(models.area);
+        state.hasMany(models.area, {as: 'areas'});
       }
     }
   });
