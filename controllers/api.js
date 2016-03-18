@@ -6,7 +6,17 @@ const request = require('superagent');
 module.exports = {
   index (req, res) {
     db.state.findAll().then((states) => {
-      res.send(states);
+      states.forEach((state) => {
+        state.getAreas().then((areas) => {
+          areas.forEach((area) => {
+            area.getTemps().then((temps) => {
+              temps.forEach((temp) => {
+                res.send(temp);
+              });
+            });
+          });
+        });
+      });
     });
   },
 
@@ -23,54 +33,55 @@ module.exports = {
         } else {
           throw err;
         }
-      }
-      const data = JSON.parse(body.text).places[0]; // eslint-disable-line no-magic-numbers
-      const created = {};
-      db.state.findOrCreate({
-        where: {
-          abbr: data['state abbreviation']
-        }, defaults: {
-          name: data.state
-        }
-      }).spread((state, crstate) => {
-        created.state = crstate;
-        db.area.findOrCreate({
+      } else {
+        const data = JSON.parse(body.text).places[0]; // eslint-disable-line no-magic-numbers
+        const created = {};
+        db.state.findOrCreate({
           where: {
-            code: zip,
-            name: data['place name']
+            abbr: data['state abbreviation']
           }, defaults: {
-            stateId: state.id
+            name: data.state
           }
-        }).spread((area, crarea) => {
-          created.area = crarea;
-          if (crarea) {
-            state.setAreas(area);
-          }
-          db.temp.findOrCreate({
+        }).spread((state, crstate) => {
+          created.state = crstate;
+          db.area.findOrCreate({
             where: {
-              sessionId: req.sessionID
+              code: zip,
+              name: data['place name']
             }, defaults: {
-              heat: req.body.heat,
-              cool: req.body.cool,
-              noheat: req.body.noheat,
-              nocool: req.body.nocool,
-              areaId: area.id
+              stateId: state.id
             }
-          })
-          .spread((temp, crtemp) => {
-            created.temp = crtemp;
-            if (crtemp) {
-              area.setTemps(temp);
+          }).spread((area, crarea) => {
+            if (crarea) {
+              state.addArea(area);
             }
-            res.send({
-              created: created,
-              state: state,
-              area: area,
-              temp: temp
+            created.area = crarea;
+            db.temp.findOrCreate({
+              where: {
+                sessionId: req.sessionID
+              }, defaults: {
+                heat: req.body.heat,
+                cool: req.body.cool,
+                noheat: req.body.noheat,
+                nocool: req.body.nocool,
+                areaId: area.id
+              }
+            })
+            .spread((temp, crtemp) => {
+              created.temp = crtemp;
+              if (crtemp) {
+                area.addTemp(temp);
+              }
+              res.send({
+                created: created,
+                state: state,
+                area: area,
+                temp: temp
+              });
             });
           });
         });
-      });
+      }
     });
   }
 }
