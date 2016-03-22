@@ -1,22 +1,45 @@
-'use strict'
+'use strict';
 
 const db = require('../models/');
 const request = require('superagent');
 
 module.exports = {
   index (req, res) {
+    const stateP = new Promise();
+    const areaP = new Promise();
+    const tempP = new Promise();
+    const promiseArr = [stateP, areaP, tempP];
+    const stateArr = [];
     db.state.findAll().then((states) => {
-      states.forEach((state) => {
-        state.getAreas().then((areas) => {
-          areas.forEach((area) => {
-            area.getTemps().then((temps) => {
-              temps.forEach((temp) => {
-                res.send(temp);
+      states.forEach((state, stateItr) => {
+        stateArr[stateItr] = state.dataValues;
+        stateArr[stateItr].areas = [];
+        db.area.findAll({
+          where: {
+            stateId: state.dataValues.id
+          }
+        }).then((areas) => {
+          areas.forEach((area, areaItr) => {
+            stateArr[stateItr].areas[areaItr] = area.dataValues;
+            stateArr[stateItr].areas[areaItr].temps = [];
+            db.temp.findAll({
+              where: {
+                areaId: area.dataValues.id
+              }
+            }).then((temps) => {
+              temps.forEach((temp, tempItr) => {
+                stateArr[stateItr].areas[areaItr].temps[tempItr] = temp.dataValues;
               });
+              tempP.resolve();
             });
           });
+          areaP.resolve();
         });
       });
+      stateP.resolve();
+    });
+    Promise.all(promiseArr).then((allArr) => {
+      res.send(allArr);
     });
   },
 
