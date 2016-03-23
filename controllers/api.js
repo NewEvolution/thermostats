@@ -4,6 +4,7 @@ const db = require('../models/');
 const request = require('superagent');
 
 module.exports = {
+  // Full data dump, all states, areas & temps hierarchically
   index (req, res) {
     let stateCount = 0;
     const stateArr = [];
@@ -34,6 +35,10 @@ module.exports = {
         });
       });
     });
+  },
+
+  states (req, res) {
+    res.send('states');
   },
 
   new (req, res) {
