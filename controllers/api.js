@@ -5,13 +5,11 @@ const request = require('superagent');
 
 module.exports = {
   index (req, res) {
-    const stateP = new Promise();
-    const areaP = new Promise();
-    const tempP = new Promise();
-    const promiseArr = [stateP, areaP, tempP];
+    let stateCount = 0;
     const stateArr = [];
     db.state.findAll().then((states) => {
       states.forEach((state, stateItr) => {
+        stateCount = stateCount < stateItr ? stateItr : stateCount;
         stateArr[stateItr] = state.dataValues;
         stateArr[stateItr].areas = [];
         db.area.findAll({
@@ -30,16 +28,11 @@ module.exports = {
               temps.forEach((temp, tempItr) => {
                 stateArr[stateItr].areas[areaItr].temps[tempItr] = temp.dataValues;
               });
-              tempP.resolve();
+              if (stateCount === stateItr) res.send(stateArr);
             });
           });
-          areaP.resolve();
         });
       });
-      stateP.resolve();
-    });
-    Promise.all(promiseArr).then((allArr) => {
-      res.send(allArr);
     });
   },
 
@@ -50,8 +43,8 @@ module.exports = {
       if (err) {
         if (err.status === 404) { // eslint-disable-line no-magic-numbers
           res.send({
-            created: false,
-            validzip: false
+            validzip: false,
+            created: false
           });
         } else {
           throw err;
@@ -96,6 +89,7 @@ module.exports = {
                 area.addTemp(temp);
               }
               res.send({
+                validzip: true,
                 created: created,
                 state: state,
                 area: area,
