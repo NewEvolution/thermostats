@@ -38,10 +38,41 @@ module.exports = {
   },
 
   states (req, res) {
-    res.send('states');
+    let stateCount = 0;
+    const stateArr = [];
+    db.state.findAll().then((states) => {
+      states.forEach((state, stateItr) => {
+        stateCount = stateCount < stateItr ? stateItr : stateCount;
+        stateArr[stateItr] = state.dataValues;
+        db.area.findAll({
+          where: {
+            stateId: state.dataValues.id
+          }
+        }).then((areas) => {
+          areas.forEach((area) => {
+            db.temp.findAll({
+              where: {
+                areaId: area.dataValues.id
+              },
+              attributes: [
+                [db.sequelize.fn('AVG', db.sequelize.col('heat')), 'heat'],
+                [db.sequelize.fn('AVG', db.sequelize.col('cool')), 'cool']
+              ]
+            }).then((temps) => {
+              stateArr[stateItr].temps = temps;
+              if (stateCount === stateItr) res.send(stateArr);
+            });
+          });
+        });
+      });
+    });
   },
 
   new (req, res) {
+    const noheat = req.body.noheat;
+    const nocool = req.body.nocool;
+    if (noheat === 'true' || noheat === true) req.body.heat = null;
+    if (nocool === 'true' || nocool === true) req.body.cool = null;
     const zip = req.body.zip;
     const zipapi = `https://api.zippopotam.us/us/${zip}`
     request.get(zipapi).end((err, body) => {
