@@ -53,13 +53,36 @@ module.exports = {
             db.temp.findAll({
               where: {
                 areaId: area.dataValues.id
-              },
-              attributes: [
-                [db.sequelize.fn('AVG', db.sequelize.col('heat')), 'heat'],
-                [db.sequelize.fn('AVG', db.sequelize.col('cool')), 'cool']
-              ]
+              }
             }).then((temps) => {
-              stateArr[stateItr].temps = temps;
+              let heat = 0,
+                  cool = 0,
+                  noheat = 0,
+                  nocool = 0,
+                  heatItr = 0,
+                  coolItr = 0;
+              temps.forEach((temp) => {
+                heat += temp.dataValues.heat;
+                cool += temp.dataValues.cool;
+                if (temp.dataValues.noheat) {
+                  ++noheat;
+                } else {
+                  ++heatItr;
+                }
+                if (temp.dataValues.nocool) {
+                  ++nocool;
+                } else {
+                  ++coolItr;
+                }
+              });
+              heat = heat / heatItr;
+              cool = cool / coolItr;
+              stateArr[stateItr].data = {
+                heat: heat,
+                cool: cool,
+                noheat: noheat,
+                nocool: nocool
+              };
               if (stateCount === stateItr) res.send(stateArr);
             });
           });
