@@ -8,16 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     noheat: DataTypes.BOOLEAN,
     nocool: DataTypes.BOOLEAN
   }, {
-    timestamps: false,
-    classMethods: {
-      associate: (models) => {
-        temp.belongsTo(models.area, {
-          foreignkey: {
-            allowNull: false
-          }
-        });
-      }
-    }
+    timestamps: false
   });
   return temp;
 };

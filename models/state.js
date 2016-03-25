@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     classMethods: {
       associate: (models) => {
-        state.hasMany(models.area, {as: 'areas'});
+        state.hasMany(models.area);
       }
     }
   });

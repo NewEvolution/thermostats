@@ -8,12 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     classMethods: {
       associate: (models) => {
-        area.belongsTo(models.state, {
-          foreignKey: {
-            allowNull: false
-          }
-        });
-        area.hasMany(models.temp, {as: 'temps'});
+        area.hasMany(models.temp);
       }
     }
   });
