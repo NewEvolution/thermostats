@@ -6,34 +6,17 @@ const request = require('superagent');
 module.exports = {
   // Full data dump, all states, areas & temps hierarchically
   index (req, res) {
-    let stateCount = 0;
-    const stateArr = [];
-    db.state.findAll().then((states) => {
-      states.forEach((state, stateItr) => {
-        stateCount = stateCount < stateItr ? stateItr : stateCount;
-        stateArr[stateItr] = state.dataValues;
-        stateArr[stateItr].areas = [];
-        db.area.findAll({
-          where: {
-            stateId: state.dataValues.id
-          }
-        }).then((areas) => {
-          areas.forEach((area, areaItr) => {
-            stateArr[stateItr].areas[areaItr] = area.dataValues;
-            stateArr[stateItr].areas[areaItr].temps = [];
-            db.temp.findAll({
-              where: {
-                areaId: area.dataValues.id
-              }
-            }).then((temps) => {
-              temps.forEach((temp, tempItr) => {
-                stateArr[stateItr].areas[areaItr].temps[tempItr] = temp.dataValues;
-              });
-              if (stateCount === stateItr) res.send(stateArr);
-            });
-          });
-        });
-      });
+    db.state.findAll({
+      include: [{
+        model: db.area,
+        stateId: db.Sequelize.col('state.id'),
+        include: [{
+          model: db.temp,
+          areaId: db.Sequelize.col('area.id')
+        }]
+      }]
+    }).then((states) => {
+      res.send(states);
     });
   },
 
