@@ -21,56 +21,51 @@ module.exports = {
   },
 
   states (req, res) {
-    let stateCount = 0;
-    const stateArr = [];
-    db.state.findAll().then((states) => {
-      states.forEach((state, stateItr) => {
-        stateCount = stateCount < stateItr ? stateItr : stateCount;
-        stateArr[stateItr] = state.dataValues;
-        db.area.findAll({
-          where: {
-            stateId: state.dataValues.id
-          }
-        }).then((areas) => {
-          areas.forEach((area) => {
-            db.temp.findAll({
-              where: {
-                areaId: area.dataValues.id
-              }
-            }).then((temps) => {
-              let heat = 0,
-                  cool = 0,
-                  noheat = 0,
-                  nocool = 0,
-                  heatItr = 0,
-                  coolItr = 0;
-              temps.forEach((temp) => {
-                heat += temp.dataValues.heat;
-                cool += temp.dataValues.cool;
-                if (temp.dataValues.noheat) {
-                  ++noheat;
-                } else {
-                  ++heatItr;
-                }
-                if (temp.dataValues.nocool) {
-                  ++nocool;
-                } else {
-                  ++coolItr;
-                }
-              });
-              heat = heat / heatItr;
-              cool = cool / coolItr;
-              stateArr[stateItr].data = {
-                heat: heat,
-                cool: cool,
-                noheat: noheat,
-                nocool: nocool
-              };
-              if (stateCount === stateItr) res.send(stateArr);
-            });
+    db.state.findAll({
+      include: [{
+        model: db.area,
+        stateId: db.Sequelize.col('state.id'),
+        include: [{
+          model: db.temp,
+          areaId: db.Sequelize.col('area.id')
+        }]
+      }]
+    }).then((states) => {
+      let heat,
+          cool,
+          heatItr,
+          coolItr,
+          noheat,
+          nocool;
+      states.forEach((state) => {
+        heat = cool = heatItr = coolItr = noheat = nocool = 0;
+        state.areas.forEach((area) => {
+          area.temps.forEach((temp) => {
+            if (temp.noheat) {
+              ++noheat;
+            } else {
+              heat += temp.heat;
+              ++heatItr;
+            }
+            if (temp.nocool) {
+              ++nocool;
+            } else {
+              cool += temp.cool;
+              ++coolItr;
+            }
           });
         });
+        heat = heat / heatItr;
+        cool = cool / coolItr;
+        delete state.dataValues.areas;
+        state.dataValues.data = {
+          heat: heat,
+          cool: cool,
+          noheat: noheat,
+          nocool: nocool
+        };
       });
+      res.send(states);
     });
   },
 
