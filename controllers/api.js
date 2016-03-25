@@ -2,13 +2,25 @@
 
 const db = require('../models/');
 const request = require('superagent');
+const stateAbbrLength = 2;
+const zipCodeLength = 5;
 
 module.exports = {
-  // Full data dump, all states, areas & temps hierarchically
+  // Full data dump of every key:value on selected search items
   index (req, res) {
+    let stateWhere = {};
+    if (req.params.state.length === stateAbbrLength) {
+      stateWhere = {abbr: req.params.state.toUpperCase()};
+    }
+    let areaWhere = {};
+    if (req.params.area && req.params.area.length === zipCodeLength) {
+      areaWhere = {code: parseInt(req.params.area)};
+    }
     db.state.findAll({
+      where: stateWhere,
       include: [{
         model: db.area,
+        where: areaWhere,
         stateId: db.Sequelize.col('state.id'),
         include: [{
           model: db.temp,
@@ -20,10 +32,20 @@ module.exports = {
     });
   },
 
-  states (req, res) {
+  detail (req, res) {
+    let stateWhere = {};
+    if (req.params.state.length === stateAbbrLength) {
+      stateWhere = {abbr: req.params.state.toUpperCase()};
+    }
+    let areaWhere = {};
+    if (req.params.area && req.params.area.length === zipCodeLength) {
+      areaWhere = {code: parseInt(req.params.area)};
+    }
     db.state.findAll({
+      where: stateWhere,
       include: [{
         model: db.area,
+        where: areaWhere,
         stateId: db.Sequelize.col('state.id'),
         include: [{
           model: db.temp,
