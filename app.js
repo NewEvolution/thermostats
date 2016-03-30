@@ -3,7 +3,6 @@
 const express = require('express');
 const app = express();
 
-
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const SESS_SECRET = process.env.SESS_SECRET || 'DevPasswordYo';
