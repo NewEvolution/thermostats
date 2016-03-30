@@ -6,15 +6,17 @@ const stateAbbrLength = 2;
 const zipCodeLength = 5;
 
 module.exports = {
-  // Full data dump of every key:value on selected search items
-  index (req, res) {
+  // Full data dump of state or area
+  detail (req, res) {
     let stateWhere = {};
-    if (req.params.state.length === stateAbbrLength) {
-      stateWhere = {abbr: req.params.state.toUpperCase()};
+    const state = req.params.state;
+    if (state && state.length === stateAbbrLength) {
+      stateWhere = {abbr: state.toUpperCase()};
     }
     let areaWhere = {};
-    if (req.params.area && req.params.area.length === zipCodeLength) {
-      areaWhere = {code: parseInt(req.params.area)};
+    const area = req.params.area;
+    if (area && area.length === zipCodeLength) {
+      areaWhere = {code: parseInt(area)};
     }
     db.state.findAll({
       where: stateWhere,
@@ -32,14 +34,17 @@ module.exports = {
     });
   },
 
-  detail (req, res) {
+  summary (req, res) {
+    // Data summary by state or area
     let stateWhere = {};
-    if (req.params.state.length === stateAbbrLength) {
-      stateWhere = {abbr: req.params.state.toUpperCase()};
+    const state = req.params.state;
+    if (state && state.length === stateAbbrLength) {
+      stateWhere = {abbr: state.toUpperCase()};
     }
     let areaWhere = {};
-    if (req.params.area && req.params.area.length === zipCodeLength) {
-      areaWhere = {code: parseInt(req.params.area)};
+    const area = req.params.area;
+    if (area && area.length === zipCodeLength) {
+      areaWhere = {code: parseInt(area)};
     }
     db.state.findAll({
       where: stateWhere,
