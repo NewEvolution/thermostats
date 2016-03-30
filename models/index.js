@@ -1,8 +1,8 @@
 'use strict';
 
-const POSTGRES_URL = process.env.POSTGRES_URL || 'postgres://localhost:5432/thermostats';
+const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/thermostats';
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(POSTGRES_URL);
+const sequelize = new Sequelize(DATABASE_URL);
 
 const db = {};
 const fs = require('fs');
