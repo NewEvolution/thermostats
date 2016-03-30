@@ -3,10 +3,6 @@
 const express = require('express');
 const app = express();
 
-const db = require('./models/');
-db.sequelize.sync().then(() => {
-  console.log('DB synchronized'); // eslint-disable-line no-console
-});
 
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
@@ -34,8 +30,11 @@ app.get('*', (req, res) => {
   res.send('You found the marble in the oatmeal!');
 });
 
+const db = require('./models/');
 const localPort = 3000;
 const PORT = process.env.PORT || localPort;
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`); // eslint-disable-line no-console
+db.sequelize.sync().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`); // eslint-disable-line no-console
+  });
 });
