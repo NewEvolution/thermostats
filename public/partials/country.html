@@ -1,0 +1,13 @@
+<form ng-submit='country.send()'>
+  <label for='zip'>Zip Code</label>
+  <input id='zip' type='text' name='zip' ng-model='country.zip' placeholder='00000'>
+  <label for='noheat'>No Heat</label>
+  <input id='noheat' type='checkbox' name='noheat' ng-model='country.noheat'>
+  <label for='heat'>Heat</label>
+  <input id='heat' type='number' name='heat' ng-model='country.heat'>
+  <label for='nocool'>No Cool</label>
+  <input id='nocool' type='checkbox' name='nocool' ng-model='country.nocool'>
+  <label for='cool'>Cool</label>
+  <input id='cool' type='number' name='cool' ng-model='country.cool'>
+  <input type='submit'>
+</form>
