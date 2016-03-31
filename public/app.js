@@ -3,17 +3,25 @@ var app = angular.module('Thermostats', ['ngRoute']); // eslint-disable-line no-
 
 app.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
+    .when('/', {
+      templateUrl: 'partials/new.html',
+      controller: 'SubmitCtrl',
+      controllerAs: 'submit'
+    })
     .when('/country', {
       templateUrl: 'partials/country.html',
-      controller: 'CountryCtrl'
+      controller: 'CountryCtrl',
+      controllerAs: 'country'
     })
     .when('/state/:abbr', {
       templateUrl: 'partials/state.html',
-      controller: 'StateCtrl'
+      controller: 'StateCtrl',
+      controllerAs: 'state'
     })
     .when('/area/:zip', {
       templateUrl: 'partials/area.html',
-      controller: 'AreaCtrl'
+      controller: 'AreaCtrl',
+      controllerAs: 'area'
     })
-    .otherwise('/country');
+    .otherwise('/');
 }]);
