@@ -11,3 +11,7 @@
   <input id='cool' type='number' name='cool' ng-model='country.cool'>
   <input type='submit'>
 </form>
+
+<ul ng-repeat='temp in country.temps'>
+  <li>{{temp.name}}</li>
+</ul>

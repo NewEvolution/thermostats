@@ -1,5 +1,5 @@
 /* eslint strict:0 */
-var app = angular.module('Thermostats', ['ngRoute']); // eslint-disable-line no-undef
+var app = angular.module('Thermostats', ['ngRoute']);
 
 app.config(['$routeProvider', function ($routeProvider) {
   $routeProvider

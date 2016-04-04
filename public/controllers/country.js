@@ -1,12 +1,13 @@
 /* eslint strict:0, prefer-arrow-callback:0, no-console:0 */
 
-app.controller('CountryCtrl', ['$http', function ($http) { // eslint-disable-line no-undef
+app.controller('CountryCtrl', ['$http', function ($http) {
 
   this.zip = '';
   this.heat = '';
   this.cool = '';
   this.noheat = false;
   this.nocool = false;
+  this.temps = [];
 
   this.send = function () {
     $http.post('/api', {
@@ -22,4 +23,10 @@ app.controller('CountryCtrl', ['$http', function ($http) { // eslint-disable-lin
       console.log('Failure!: ', failResp);
     });
   }
+
+  $http.get('/api')
+  .then(function (response) {
+    this.temps = response.data;
+    console.log('this.temps: ', this.temps);
+  });
 }]);

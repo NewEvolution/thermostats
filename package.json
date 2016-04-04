@@ -16,6 +16,10 @@
       "node": true,
       "es6": true
     },
+    "globals": {
+      "angular": false,
+      "app": true
+    },
     "extends": "/Users/ryan/.eslint/personal.json"
   },
   "repository": {
