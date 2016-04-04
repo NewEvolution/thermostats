@@ -7,7 +7,6 @@ app.controller('CountryCtrl', ['$http', function ($http) {
   this.cool = '';
   this.noheat = false;
   this.nocool = false;
-  this.temps = [];
 
   this.send = function () {
     $http.post('/api', {
@@ -23,6 +22,8 @@ app.controller('CountryCtrl', ['$http', function ($http) {
       console.log('Failure!: ', failResp);
     });
   }
+
+  this.temps = [];
 
   $http.get('/api')
   .then(function (response) {
