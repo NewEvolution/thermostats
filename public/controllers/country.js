@@ -18,10 +18,8 @@ app.controller('CountryCtrl', ['$http', function ($http) { // eslint-disable-lin
     })
     .then(function (succResp) {
       console.log('Success!: ', succResp);
-    },
-      function (failResp) {
-        console.log('Failure!: ', failResp);
-      }
-    );
+    }, function (failResp) {
+      console.log('Failure!: ', failResp);
+    });
   }
 }]);
