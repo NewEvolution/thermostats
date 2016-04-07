@@ -1,6 +1,6 @@
 /* eslint strict:0, prefer-arrow-callback:0, no-console:0 */
 
-app.controller('CountryCtrl', ['$http', function ($http) {
+app.controller('CountryCtrl', ['$scope', '$http', function ($scope, $http) {
 
   this.zip = '';
   this.heat = '';
@@ -27,7 +27,7 @@ app.controller('CountryCtrl', ['$http', function ($http) {
 
   $http.get('/api')
   .then(function (response) {
-    this.temps = response.data;
+    $scope.$evalAsync(this.temps = response.data);
     console.log('this.temps: ', this.temps);
   });
 }]);
