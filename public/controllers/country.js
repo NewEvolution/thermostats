@@ -25,6 +25,21 @@ app.controller('CountryCtrl', ['$http', function ($http) {
 
   this.temps = [];
 
+  $(function () {
+    new jvm.MultiMap({ // eslint-disable-line no-new
+      container: $('#map'),
+      maxLevel: 1,
+      main: {
+        map: 'us_lcc_en'
+      },
+      mapUrlByCode: function (code, multiMap) {
+        return '/vendor/jvectormap/tests/assets/us/jquery-jvectormap-data-' +
+               code.toLowerCase() + '-' +
+               multiMap.defaultProjection + '-en.js';
+      }
+    });
+  });
+
   $http.get('/api')
   .then(function (response) {
     this.temps = response.data;
