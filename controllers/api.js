@@ -97,13 +97,15 @@ module.exports = {
   },
 
   new (req, res) {
+    const AUTHID = process.env.AUTHID;
+    const AUTHTOKEN = process.env.AUTHTOKEN;
     const noheat = req.body.noheat;
     const nocool = req.body.nocool;
     if (noheat === 'true' || noheat === true) req.body.heat = null;
     if (nocool === 'true' || nocool === true) req.body.cool = null;
     const zip = req.body.zip;
-    const zipapi = `https://api.zippopotam.us/us/${zip}`
-    request.get(zipapi).end((err, body) => {
+    const apiurl = `https://us-zipcode.api.smartystreets.com/lookup?auth-id=${AUTHID}&auth-token=${AUTHTOKEN}&zipcode=${zip}`
+    request.get(apiurl).end((err, body) => {
       if (err) {
         if (err.status === 404) { // eslint-disable-line no-magic-numbers
           res.send({
