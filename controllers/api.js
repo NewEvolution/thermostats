@@ -5,6 +5,9 @@ const request = require('superagent');
 const stateAbbrLength = 2;
 const zipCodeLength = 5;
 
+const AUTHID = process.env.AUTHID;
+const AUTHTOKEN = process.env.AUTHTOKEN;
+
 module.exports = {
   // Full data dump of state or area
   detail (req, res) {
@@ -97,8 +100,6 @@ module.exports = {
   },
 
   new (req, res) {
-    const AUTHID = process.env.AUTHID;
-    const AUTHTOKEN = process.env.AUTHTOKEN;
     const noheat = req.body.noheat;
     const nocool = req.body.nocool;
     if (noheat === 'true' || noheat === true) req.body.heat = null;
@@ -106,15 +107,9 @@ module.exports = {
     const zip = req.body.zip;
     const apiurl = `https://us-zipcode.api.smartystreets.com/lookup?auth-id=${AUTHID}&auth-token=${AUTHTOKEN}&zipcode=${zip}`
     request.get(apiurl).end((err, body) => {
-      if (err) {
-        if (err.status === 404) { // eslint-disable-line no-magic-numbers
-          res.send({
-            validzip: false,
-            created: false
-          });
-        } else {
-          throw err;
-        }
+      if (err) throw err;
+      if (body.statusCode !== 200) { // eslint-disable-line no-magic-numbers
+        console.log(body.text); // eslint-disable-line no-console
       } else {
         const data = JSON.parse(body.text).places[0]; // eslint-disable-line no-magic-numbers
         const created = {};
