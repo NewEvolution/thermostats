@@ -17,9 +17,9 @@ app.controller('CountryCtrl', ['$http', function ($http) {
       nocool: this.nocool
     })
     .then(function (succResp) {
-      console.log('Success!: ', succResp);
+      console.log('Post success: ', succResp);
     }, function (failResp) {
-      console.log('Failure!: ', failResp);
+      console.log('Post failure: ', failResp);
     });
   }
 
