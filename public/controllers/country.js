@@ -26,27 +26,29 @@ app.controller('CountryCtrl', ['$http', function ($http) {
   $http.get('/api/summary')
   .then(function (response) {
     var rawtemps = response.data;
-    var temps = {};
+    var heat = {};
+    var cool = {};
+    var map; // eslint-disable-line no-unused-vars
     for (var i = rawtemps.length - 1; i >= 0; --i) { // eslint-disable-line no-magic-numbers
-      temps['US-' + rawtemps[i].abbr] = rawtemps[i].data.heat;
+      heat['US-' + rawtemps[i].abbr] = rawtemps[i].data.heat;
+      cool['US-' + rawtemps[i].abbr] = rawtemps[i].data.cool;
     }
-    console.log("temps", temps);
     $(function () {
-      new jvm.MultiMap({ // eslint-disable-line no-new
+      map = new jvm.MultiMap({ // eslint-disable-line no-new
         container: $('#map'),
         maxLevel: 1,
         main: {
           map: 'us_lcc_en',
           series: {
             regions: [{
-              values: temps,
-              scale: ['#500000', '#ff0000']
+              values: heat,
+              scale: ['#ffdddd', '#ff0000']
             }]
           },
-          onRegionTipShow: function (e, el, name) {
-            var heat = temps[name];
-            if (heat) {
-              el.html(el.html() + ': Heat - ' + heat);
+          onRegionTipShow: function (e, label, code) {
+            var data = heat[code];
+            if (data) {
+              label.html(label.html() + ': Heat - ' + data);
             }
           }
         },
