@@ -32,37 +32,33 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
       heat[`US-${temp.abbr}`] = temp.data.heat;
       cool[`US-${temp.abbr}`] = temp.data.cool;
     })
-    $(() => {
-      const map = new jvm.MultiMap({ // eslint-disable-line no-new
-        container: $('#map'),
-        maxLevel: 1,
-        main: {
-          map: 'us_lcc_en',
-          series: {
-            regions: [{
-              values: heat,
-              scale: ['#ffdddd', '#ff0000']
-            }]
-          },
-          onRegionTipShow: (e, label, code) => {
-            const data = heat[code];
-            if (data) {
-              label.html(`${label.html()}: Heat - ${data}`);
-            }
-          }
-        },
-        mapUrlByCode: (code, multiMap) => `/vendor/jvectormap/tests/assets/us/jquery-jvectormap-data-${code.toLowerCase()}-${multiMap.defaultProjection}-en.js`
-      });
-
-      this.swap = () => {
-        if (this.show === 'heat') {
-          map.params.main.series.regions[0].values = heat;
-          map.params.main.series.regions[0].scale = ['#ffdddd', '#ff0000'];
-        } else {
-          map.params.main.series.regions[0].values = cool;
-          map.params.main.series.regions[0].scale = ['#ddddff', '#0000ff'];
+    $('#map').vectorMap({
+      map: 'us_lcc_en',
+      series: {
+        regions: [{
+          values: heat,
+          scale: ['#ffdddd', '#ff0000'],
+        }]
+      },
+      onRegionTipShow: (e, label, code) => {
+        const h_data = heat[code];
+        const c_data = cool[code];
+        if (h_data && c_data) {
+          label.html(`${label.html()}:<br>Heat - ${h_data}&deg;<br>Cool - ${c_data}&deg;`);
         }
       }
     });
+
+    const mapObject = $('#map').vectorMap('get', 'mapObject');
+
+    this.swap = () => {
+      if (this.show === 'heat') {
+        mapObject.series.regions[0].setValues(heat);
+        mapObject.series.regions[0].setScale(['#ffdddd', '#ff0000']);
+      } else {
+        mapObject.series.regions[0].setValues(cool);
+        mapObject.series.regions[0].setScale(['#ddddff', '#0000ff']);
+      }
+    }
   });
 });
