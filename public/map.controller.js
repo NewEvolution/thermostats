@@ -44,7 +44,7 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
         const h_data = heat[code];
         const c_data = cool[code];
         if (h_data && c_data) {
-          label.html(`${label.html()}:<br>Heat - ${h_data}&deg;<br>Cool - ${c_data}&deg;`);
+          label.html(`${label.html()}<br>Heat - ${h_data}&deg;<br>Cool - ${c_data}&deg;`);
         }
       }
     });
@@ -57,7 +57,7 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
         mapObject.series.regions[0].setScale(['#ffdddd', '#ff0000']);
       } else {
         mapObject.series.regions[0].setValues(cool);
-        mapObject.series.regions[0].setScale(['#ddddff', '#0000ff']);
+        mapObject.series.regions[0].setScale(['#0000ff', '#ddddff']);
       }
     }
   });

@@ -9,7 +9,7 @@
   </head>
   <body ng-app='Thermostats'>
     <div ng-controller='mapCtrl as map'>
-      <form ng-submit='map.send()'>
+      <form action='' ng-submit='map.send()'>
         <label for='zip'>Zip Code</label>
         <input id='zip' type='text' name='zip' ng-model='map.zip' placeholder='00000'>
         <label for='noheat'>No Heat</label>
@@ -35,8 +35,8 @@
     </div>
 
     <!-- visual control -->
-    <script src='/vendor/jquery/dist/jquery.min.js'></script>
-    <script src='/vendor/bootstrap/dist/js/bootstrap.min.js'></script>
+    <script src='vendor/jquery/dist/jquery.min.js'></script>
+    <script src='vendor/bootstrap/dist/js/bootstrap.min.js'></script>
 
     <!-- jVectorMap scripts -->
     <script src='vendor/jvectormap/jquery.jvectormap.min.js'></script>
