@@ -1,5 +1,5 @@
 'use strict';
-angular.module('Thermostats').controller('mapCtrl', ['$http', function ($http) { // eslint-disable-line prefer-arrow-callback
+angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint-disable-line prefer-arrow-callback
 
   this.zip = '';
   this.heat = '';
@@ -33,7 +33,7 @@ angular.module('Thermostats').controller('mapCtrl', ['$http', function ($http) {
       cool[`US-${temp.abbr}`] = temp.data.cool;
     })
     $(() => {
-      const map = new jvm.MultiMap({ // eslint-disable-line no-new,no-unused-vars
+      const map = new jvm.MultiMap({ // eslint-disable-line no-new
         container: $('#map'),
         maxLevel: 1,
         main: {
@@ -65,4 +65,4 @@ angular.module('Thermostats').controller('mapCtrl', ['$http', function ($http) {
       }
     });
   });
-}]);
+});
