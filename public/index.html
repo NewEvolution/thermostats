@@ -9,28 +9,47 @@
   </head>
   <body ng-app='Thermostats'>
     <div ng-controller='mapCtrl as map'>
-      <form ng-submit='map.send()'>
-        <label for='zip'>Zip Code</label>
-        <input id='zip' type='text' name='zip' ng-model='map.zip' placeholder='00000'>
-        <label for='noheat'>No Heat</label>
-        <input id='noheat' type='checkbox' name='noheat' ng-model='map.noheat'>
-        <label for='heat'>Heat</label>
-        <input id='heat' type='number' name='heat' ng-model='map.heat'>
-        <label for='nocool'>No Cool</label>
-        <input id='nocool' type='checkbox' name='nocool' ng-model='map.nocool'>
-        <label for='cool'>Cool</label>
-        <input id='cool' type='number' name='cool' ng-model='map.cool'>
-        <input type='submit'>
-      </form>
+      <!-- Temperature entry modal -->
+      <div class='modal fade' id='input-modal' aria-labeledby='modal-title' tabindex='-1' role='dialog'>
+        <div class='modal-dialog' role='document'>
+          <div class='modal-content'>
+            <div class='modal-header'>
+              <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+              <h4 class='modal-title' id='modal-title'>Your Thermostat Settings</h4>
+            </div>
+            <div class='modal-body'>
+              <form ng-submit='map.send()'>
+                <label for='zip'>Zip Code</label>
+                <input id='zip' type='text' name='zip' ng-model='map.zip' placeholder='00000'>
+                <label for='noheat'>No Heat</label>
+                <input id='noheat' type='checkbox' name='noheat' ng-model='map.noheat'>
+                <label for='heat'>Heat</label>
+                <input id='heat' type='number' name='heat' ng-model='map.heat'>
+                <label for='nocool'>No Cool</label>
+                <input id='nocool' type='checkbox' name='nocool' ng-model='map.nocool'>
+                <label for='cool'>Cool</label>
+                <input id='cool' type='number' name='cool' ng-model='map.cool'>
+                <input type='submit'>
+              </form>
+            </div>
+            <div class='modal-footer'>
+              <button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</button>
+              <button type='button' class='btn btn-primary' data-dismiss='modal'>Submit</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
       <div id='map'>
         <!-- Populated by jVectorMap -->
       </div>
+
+      <!-- Map view switching -->
       <div>
-        <label for="showheat">Heat</label>
-        <input type="radio" name="scale" id="showheat" value="heat" ng-model="map.show" ng-click="map.swap()">
-        <input type="radio" name="scale" id="showcool" value="cool" ng-model="map.show" ng-click="map.swap()">
-        <label for="showcool">Cool</label>
+        <label for='showheat'>Heat</label>
+        <input type='radio' name='scale' id='showheat' value='heat' ng-model='map.show' ng-click='map.swap()'>
+        <input type='radio' name='scale' id='showcool' value='cool' ng-model='map.show' ng-click='map.swap()'>
+        <label for='showcool'>Cool</label>
       </div>
     </div>
 
