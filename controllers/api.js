@@ -118,22 +118,22 @@ module.exports = {
       if (err) {
         throw err;
       } else {
-        const data = JSON.parse(body.text)[0]; // eslint-disable-line no-magic-numbers
+        const data = JSON.parse(body.text)[0];
         if (data.hasOwnProperty('status')) {
           response.message = data.reason;
           res.send(response);
         } else {
           db.state.findOrCreate({
             where: {
-              abbr: data.city_states[0].state_abbreviation // eslint-disable-line no-magic-numbers
+              abbr: data.city_states[0].state_abbreviation
             }, defaults: {
-              name: data.city_states[0].state // eslint-disable-line no-magic-numbers
+              name: data.city_states[0].state
             }
           }).spread((state, crstate) => {
             created.state = crstate;
             db.county.findOrCreate({
               where: {
-                name: data.zipcodes[0].county_name // eslint-disable-line no-magic-numbers
+                name: data.zipcodes[0].county_name
               }, defaults: {
                 stateId: state.id
               }
