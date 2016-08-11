@@ -32,7 +32,12 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
         regions: [{
           values: temps.heat,
           scale: ['#ffeded', '#ff0000'],
+          min: 40,
+          max: 80
         }]
+      },
+      onRegionClick: () => {
+        $('#input-modal').modal();
       },
       onRegionTipShow: (e, label, code) => {
         const h_data = temps.heat[code];
