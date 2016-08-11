@@ -9,48 +9,62 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
   mapCtrl.nocool = false;
   mapCtrl.show = 'heat';
 
-  function loadmap () {
-    $http.get('/api/summary')
+  function retrieveData () {
+    return $http.get('/api/summary')
     .then(response => {
       const rawtemps = response.data;
-      const heat = {};
-      const cool = {};
+      const temps = {
+        heat: {},
+        cool: {}
+      };
       rawtemps.forEach(temp => {
-        heat[`US-${temp.abbr}`] = temp.data.heat;
-        cool[`US-${temp.abbr}`] = temp.data.cool;
+        temps.heat[`US-${temp.abbr}`] = temp.data.heat;
+        temps.cool[`US-${temp.abbr}`] = temp.data.cool;
       })
-      $('#map').vectorMap({
-        map: 'us_lcc_en',
-        series: {
-          regions: [{
-            values: heat,
-            scale: ['#ffdddd', '#ff0000'],
-          }]
-        },
-        onRegionTipShow: (e, label, code) => {
-          const h_data = heat[code];
-          const c_data = cool[code];
-          if (h_data && c_data) {
-            label.html(`${label.html()}<br>Heat - ${h_data}&deg;<br>Cool - ${c_data}&deg;`);
-          }
-        }
-      });
-
-      const mapObject = $('#map').vectorMap('get', 'mapObject');
-
-      mapCtrl.swap = () => {
-        if (mapCtrl.show === 'heat') {
-          mapObject.series.regions[0].setValues(heat);
-          mapObject.series.regions[0].setScale(['#ffdddd', '#ff0000']);
-        } else {
-          mapObject.series.regions[0].setValues(cool);
-          mapObject.series.regions[0].setScale(['#0000ff', '#ddddff']);
-        }
-      }
+      return temps;
     });
   }
 
-  loadmap();
+  function buildMap (temps) {
+    $('#map').vectorMap({
+      map: 'us_lcc_en',
+      series: {
+        regions: [{
+          values: temps.heat,
+          scale: ['#ffeded', '#ff0000'],
+        }]
+      },
+      onRegionTipShow: (e, label, code) => {
+        const h_data = temps.heat[code];
+        const c_data = temps.cool[code];
+        if (h_data && c_data) {
+          label.html(`${label.html()}<br>Heat - ${h_data}&deg;<br>Cool - ${c_data}&deg;`);
+        }
+      }
+    });
+    const mapObject = $('#map').vectorMap('get', 'mapObject');
+    return mapObject;
+  }
+
+  let mapData;
+  retrieveData().then(temps => {
+    const promisedData = {
+      mapObject: buildMap(temps),
+      mapTemps: temps
+    }
+    return promisedData;
+  }).then(promisedData => { mapData = promisedData });
+
+
+  mapCtrl.swap = () => {
+    if (mapCtrl.show === 'heat') {
+      mapData.mapObject.series.regions[0].setValues(mapData.mapTemps.heat);
+      mapData.mapObject.series.regions[0].setScale(['#ffeded', '#ff0000']);
+    } else {
+      mapData.mapObject.series.regions[0].setValues(mapData.mapTemps.cool);
+      mapData.mapObject.series.regions[0].setScale(['#0000ff', '#ededff']);
+    }
+  }
 
   mapCtrl.send = () => {
     $http.post('/api', {
@@ -61,8 +75,17 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
       nocool: mapCtrl.nocool
     })
     .then(succResp => {
+      if (succResp.data.message !== 'Invalid ZIP Code.') {
+        retrieveData().then(temps => {
+          mapData.mapTemps = temps;
+          mapCtrl.swap();
+        });
+        mapCtrl.heat = mapCtrl.cool = mapCtrl.zip = '';
+        mapCtrl.noheat = mapCtrl.nocool = null;
+      } else {
+        console.log(`That's not a valid zip code.`) // eslint-disable-line no-console
+      }
       console.log('Post success:', succResp); // eslint-disable-line no-console
-      loadmap();
     }, failResp => {
       console.log('Post failure:', failResp); // eslint-disable-line no-console
     });

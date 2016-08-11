@@ -84,8 +84,12 @@ module.exports = {
             }
           });
         });
-        heat = heat / heatItr;
-        cool = cool / coolItr;
+        if (heatItr) {
+          heat = heat / heatItr;
+        }
+        if (coolItr) {
+          cool = cool / coolItr;
+        }
         delete state.dataValues.counties;
         state.dataValues.data = {
           heat: heat,
