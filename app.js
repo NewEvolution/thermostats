@@ -24,8 +24,6 @@ const apiR = require('./routes/api');
 app.use(apiR);
 
 const path = require('path');
-app.use(express.static(path.join(__dirname, 'public')));
-
 const nodeSass = require('node-sass-middleware');
 app.use(nodeSass({
   src: path.join(__dirname, 'public'),
@@ -33,6 +31,8 @@ app.use(nodeSass({
   indentedSyntax: true,
   sourceMap: true
 }));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('*', (req, res) => {
   res.send('You found the marble in the oatmeal!');
