@@ -18,17 +18,33 @@
               <h4 class='modal-title' id='modal-title'>Your Thermostat Settings</h4>
             </div>
             <div class='modal-body'>
-              <form ng-submit='map.send()'>
-                <label for='zip'>Zip Code</label>
-                <input id='zip' type='text' name='zip' ng-model='map.zip' placeholder='00000'>
-                <label for='noheat'>No Heat</label>
-                <input id='noheat' type='checkbox' name='noheat' ng-model='map.noheat'>
-                <label for='heat'>Heat</label>
-                <input id='heat' type='number' name='heat' ng-model='map.heat'>
-                <label for='nocool'>No Cool</label>
-                <input id='nocool' type='checkbox' name='nocool' ng-model='map.nocool'>
-                <label for='cool'>Cool</label>
-                <input id='cool' type='number' name='cool' ng-model='map.cool'>
+              <form class='form-horizontal' ng-submit='map.send()'>
+                <div class='form-group'>
+                  <label for='noheat'>No Heat</label>
+                  <div>
+                    <input id='noheat' type='checkbox' name='noheat' ng-model='map.noheat'>
+                  </div>
+                  <label for='heat'>Heat</label>
+                  <div>
+                    <input id='heat' type='number' name='heat' ng-model='map.heat'>
+                  </div>
+                </div>
+                <div class='form-group'>
+                  <label for='nocool'>No Cool</label>
+                  <div>
+                    <input id='nocool' type='checkbox' name='nocool' ng-model='map.nocool'>
+                  </div>
+                  <label for='cool'>Cool</label>
+                  <div>
+                    <input id='cool' type='number' name='cool' ng-model='map.cool'>
+                  </div>
+                </div>
+                <div class='form-group'>
+                  <label class='col-xs-2 control-label' for='zip'>Zip Code</label>
+                  <div class='col-xs-10'>
+                    <input id='zip' class='form-control' type='text' name='zip' ng-model='map.zip' placeholder='00000'>
+                  </div>
+                </div>
                 <input type='submit'>
               </form>
             </div>
