@@ -3,12 +3,13 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
 
   const mapCtrl = this;
   mapCtrl.zip = '';
-  mapCtrl.heat = '';
-  mapCtrl.cool = '';
+  mapCtrl.heat = 60;
+  mapCtrl.cool = 60;
   mapCtrl.noheat = false;
   mapCtrl.nocool = false;
   mapCtrl.show = 'heat';
 
+	// Grabs whole country summary data from API
   function retrieveData () {
     return $http.get('/api/summary')
     .then(response => {
@@ -25,9 +26,11 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
     });
   }
 
+	// Generates and populates map with initial data
   function buildMap (temps) {
     $('#map').vectorMap({
       map: 'us_lcc_en',
+      backgroundColor: '#214244',
       series: {
         regions: [{
           values: temps.heat,
@@ -36,14 +39,15 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
           max: 80
         }]
       },
-      onRegionClick: () => {
+      onRegionClick: (e, code) => { // eslint-disable-line no-unused-vars
+				// console.log(code.slice(3)); // grabs state abbreviation
         $('#input-modal').modal();
       },
       onRegionTipShow: (e, label, code) => {
         const h_data = temps.heat[code];
         const c_data = temps.cool[code];
         if (h_data && c_data) {
-          label.html(`${label.html()}<br>Heat - ${h_data}&deg;<br>Cool - ${c_data}&deg;`);
+          label.html(`${label.html()}<br>Avg Heat - ${h_data}&deg;<br>Avg Cool - ${c_data}&deg;`);
         }
       }
     });
@@ -60,7 +64,8 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
     return promisedData;
   }).then(promisedData => { mapData = promisedData });
 
-
+  // Switches display of data between heating and cooling
+	// also cross-purposed to update map data after form submission
   mapCtrl.swap = () => {
     if (mapCtrl.show === 'heat') {
       mapData.mapObject.series.regions[0].setValues(mapData.mapTemps.heat);
@@ -71,6 +76,14 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
     }
   }
 
+	// Clears form data
+  mapCtrl.clear = () => {
+    mapCtrl.zip = '';
+    mapCtrl.heat = mapCtrl.cool = 60;
+    mapCtrl.noheat = mapCtrl.nocool = null;
+  }
+
+	// Submits form data for new temperature to the database
   mapCtrl.send = () => {
     $http.post('/api', {
       zip: mapCtrl.zip,
@@ -85,8 +98,7 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
           mapData.mapTemps = temps;
           mapCtrl.swap();
         });
-        mapCtrl.heat = mapCtrl.cool = mapCtrl.zip = '';
-        mapCtrl.noheat = mapCtrl.nocool = null;
+        mapCtrl.clear();
       } else {
         console.log(`That's not a valid zip code.`) // eslint-disable-line no-console
       }
