@@ -45,7 +45,7 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
         const h_data = temps.heat[code],
               c_data = temps.cool[code];
         if (h_data && c_data) {
-          label.html(`${label.html()}<br>Avg Heat - ${h_data}&deg;<br>Avg Cool - ${c_data}&deg;`);
+          label.html(`${label.html()}<br>Avg Heat - ${h_data}&deg;F<br>Avg Cool - ${c_data}&deg;F`);
         }
       }
     });
