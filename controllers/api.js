@@ -1,11 +1,10 @@
 'use strict';
 
-const db = require('../models/');
-const request = require('superagent');
-const stateAbbrLength = 2;
-
-const AUTHID = process.env.AUTHID;
-const AUTHTOKEN = process.env.AUTHTOKEN;
+const db = require('../models/'),
+      request = require('superagent'),
+      stateAbbrLength = 2,
+      AUTHID = process.env.AUTHID,
+      AUTHTOKEN = process.env.AUTHTOKEN;
 
 module.exports = {
   // Full data dump of state or county
@@ -85,10 +84,10 @@ module.exports = {
           });
         });
         if (heatItr) {
-          heat = heat / heatItr;
+          heat = (heat / heatItr).toFixed(1);
         }
         if (coolItr) {
-          cool = cool / coolItr;
+          cool = (cool / coolItr).toFixed(1);
         }
         delete state.dataValues.counties;
         state.dataValues.data = {
