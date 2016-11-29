@@ -10,14 +10,14 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
   mapCtrl.show = 'heat';
 
 	// Grabs whole country summary data from API
-  function retrieveData () {
+  const retrieveData = () => {
     return $http.get('/api/summary')
     .then(response => {
-      const rawtemps = response.data;
-      const temps = {
-        heat: {},
-        cool: {}
-      };
+      const rawtemps = response.data,
+            temps = {
+              heat: {},
+              cool: {}
+            };
       rawtemps.forEach(temp => {
         temps.heat[`US-${temp.abbr}`] = temp.data.heat;
         temps.cool[`US-${temp.abbr}`] = temp.data.cool;
@@ -27,7 +27,7 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
   }
 
 	// Generates and populates map with initial data
-  function buildMap (temps) {
+  const buildMap = (temps) => {
     $('#map').vectorMap({
       map: 'us_lcc_en',
       backgroundColor: '#214244',
@@ -44,8 +44,8 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
         $('#input-modal').modal();
       },
       onRegionTipShow: (e, label, code) => {
-        const h_data = temps.heat[code];
-        const c_data = temps.cool[code];
+        const h_data = temps.heat[code],
+              c_data = temps.cool[code];
         if (h_data && c_data) {
           label.html(`${label.html()}<br>Avg Heat - ${h_data}&deg;<br>Avg Cool - ${c_data}&deg;`);
         }
