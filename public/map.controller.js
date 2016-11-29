@@ -2,11 +2,9 @@
 angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint-disable-line prefer-arrow-callback
 
   const mapCtrl = this;
-  mapCtrl.zip = '';
-  mapCtrl.heat = 60;
-  mapCtrl.cool = 60;
-  mapCtrl.noheat = false;
-  mapCtrl.nocool = false;
+  mapCtrl.zip = mapCtrl.error = '';
+  mapCtrl.heat = mapCtrl.cool = 60;
+  mapCtrl.noheat = mapCtrl.nocool = false;
   mapCtrl.show = 'heat';
 
 	// Grabs whole country summary data from API
@@ -67,20 +65,22 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
   // Switches display of data between heating and cooling
 	// also cross-purposed to update map data after form submission
   mapCtrl.swap = () => {
+    const map = mapData.mapObject.series.regions[0];
     if (mapCtrl.show === 'heat') {
-      mapData.mapObject.series.regions[0].setValues(mapData.mapTemps.heat);
-      mapData.mapObject.series.regions[0].setScale(['#ffeded', '#ff0000']);
+      map.setValues(mapData.mapTemps.heat);
+      map.setScale(['#ffeded', '#ff0000']);
     } else {
-      mapData.mapObject.series.regions[0].setValues(mapData.mapTemps.cool);
-      mapData.mapObject.series.regions[0].setScale(['#0000ff', '#ededff']);
+      map.setValues(mapData.mapTemps.cool);
+      map.setScale(['#0000ff', '#ededff']);
     }
   }
 
 	// Clears form data
   mapCtrl.clear = () => {
-    mapCtrl.zip = '';
+    mapCtrl.zip = mapCtrl.error = '';
     mapCtrl.heat = mapCtrl.cool = 60;
     mapCtrl.noheat = mapCtrl.nocool = null;
+    $('.error-block').collapse('hide');
   }
 
 	// Submits form data for new temperature to the database
@@ -93,16 +93,22 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
       nocool: mapCtrl.nocool
     })
     .then(succResp => {
-      if (succResp.data.message !== 'Invalid ZIP Code.') {
+      const failMessages = [
+        'Blank lookup (you must provide a ZIP Code and/or City/State combination).',
+        'Invalid ZIP Code.'
+      ];
+      if (failMessages.includes(succResp.data.message)) {
+        $('.error-block').collapse('show');
+        mapCtrl.error = 'Please provide a valid ZIP Code.';
+        mapCtrl.zip = '';
+      } else {
         retrieveData().then(temps => {
           mapData.mapTemps = temps;
           mapCtrl.swap();
         });
         mapCtrl.clear();
-      } else {
-        console.log(`That's not a valid zip code.`) // eslint-disable-line no-console
+        $('#input-modal').modal('hide');
       }
-      console.log('Post success:', succResp); // eslint-disable-line no-console
     }, failResp => {
       console.log('Post failure:', failResp); // eslint-disable-line no-console
     });
