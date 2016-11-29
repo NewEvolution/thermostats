@@ -33,8 +33,8 @@ angular.module('Thermostats').controller('mapCtrl', function ($http) { // eslint
         regions: [{
           values: temps.heat,
           scale: ['#ffeded', '#ff0000'],
-          min: 40,
-          max: 80
+          min: 30,
+          max: 90
         }]
       },
       onRegionClick: (e, code) => { // eslint-disable-line no-unused-vars

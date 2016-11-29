@@ -23,7 +23,7 @@
                 <div class='form-group'>
                   <label class='col-xs-2 control-label' for='zip'>Zip Code</label>
                   <div class='col-xs-10'>
-                    <input id='zip' class='form-control' type='text' name='zip' ng-model='map.zip' placeholder='00000'>
+                    <input id='zip' class='form-control' type='text' pattern="[0-9]{5}" maxlength="5" name='zip' ng-model='map.zip' placeholder='00000'>
                   </div>
                 </div>
                 <div class='form-group'>
@@ -36,7 +36,7 @@
                     <input class='form-control form-center' type="text" name="heatdisp" readonly value='{{map.heat}}&deg; F'>
                   </div>
                   <div class='col-xs-6'>
-                    <input id='heat' type='range' min='40' max='80' step='1' name='heat' ng-model='map.heat'>
+                    <input id='heat' type='range' min='30' max='90' step='1' name='heat' ng-model='map.heat'>
                   </div>
                 </div>
                 <div class='form-group'>
@@ -49,7 +49,7 @@
                     <input class='form-control form-center' type="text" name="cooldisp" readonly value='{{map.cool}}&deg; F'>
                   </div>
                   <div class='col-xs-6'>
-                    <input id='cool' type='range' min='40' max='80' step='1' name='cool' ng-model='map.cool'>
+                    <input id='cool' type='range' min='30' max='90' step='1' name='cool' ng-model='map.cool'>
                   </div>
                 </div>
               </form>
