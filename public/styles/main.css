@@ -21,4 +21,9 @@ input[type=range] {
   margin: 0 0 1em 7em;
   padding: 6px; }
 
+.choices {
+  text-align: center;
+  width: 8em;
+  margin: 0 auto; }
+
 /*# sourceMappingURL=main.css.map */
