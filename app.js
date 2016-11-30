@@ -40,7 +40,7 @@ app.get('*', (req, res) => {
 const db = require('./models/'),
       localPort = 3000,
       PORT = process.env.PORT || localPort;
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync().then(() => {
   app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`); // eslint-disable-line no-console
   });
