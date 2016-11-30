@@ -2,7 +2,7 @@
 
 const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/thermostats',
       Sequelize = require('sequelize'),
-      sequelize = new Sequelize(DATABASE_URL),
+      sequelize = new Sequelize(DATABASE_URL, {logging: false}),
       db = {},
       fs = require('fs'),
       path = require('path'),
