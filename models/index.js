@@ -1,13 +1,13 @@
 'use strict';
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/thermostats';
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(DATABASE_URL);
+const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/thermostats',
+      Sequelize = require('sequelize'),
+      sequelize = new Sequelize(DATABASE_URL),
+      db = {},
+      fs = require('fs'),
+      path = require('path'),
+      basename = path.basename(module.filename);
 
-const db = {};
-const fs = require('fs');
-const path = require('path');
-const basename = path.basename(module.filename);
 fs.readdirSync(__dirname)
   .filter((file) => {
     return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'; // eslint-disable-line no-magic-numbers
