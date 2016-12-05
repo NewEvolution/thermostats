@@ -23,8 +23,17 @@ This app was written out of curiosity about people's heating and cooling habits 
   - Start the server by running `node server.js`
 
 ## Usage
+##### Full Site
 - In the browser of your choice, go to [`http://localhost:3000`](http://localhost:3000).
 - Click any state on the map to open the data entry modal window.
 - Radio buttons at the bottom of the page switch display between heating and cooling values.
 - States will change their color values based on the relative average heating and cooling values.
 - Mousing over a state which has data will display the average heating and cooling values.
+##### API
+- [`http://localhost:3000/api`](http://localhost:3000/api) - same as `/api/detail`.
+- [`http://localhost:3000/api/detail`](http://localhost:3000/api/detail) - full listing of all data.
+- [`http://localhost:3000/api/detail/<state>`](http://localhost:3000/api/detail/tn) - full listing of all data for the `<state>` provided as the state's 2-letter abbreviation.
+- [`http://localhost:3000/api/detail/<state>/<county>`](http://localhost:3000/api/detail/tn/rutherford) - full listing of all data for the `<county>` provided by name in the `<state>` provided by 2-letter abbreviation.
+- [`http://localhost:3000/api/summary`](http://localhost:3000/api/summary) - listing of data summarized by state for all states in the database.
+- [`http://localhost:3000/api/summary/<state>`](http://localhost:3000/api/summary/tn) - listing of data summary for the `<state>` provided by 2-letter abbreviation.
+- [`http://localhost:3000/api/summary/<state>/<county>`](http://localhost:3000/api/summary/tn/rutherford) - listing of data summary for all entries for the `<county>` provided by name in the `<state>` provided by 2-letter abbreviation.
