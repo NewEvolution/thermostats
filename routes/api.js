@@ -1,8 +1,8 @@
 'use strict'
 
-const router = require('express').Router();
+const apiC = require('../controllers/api'),
+      router = require('express').Router();
 
-const apiC = require('../controllers/api');
 router.get('/api', apiC.detail)
       .get('/api/detail', apiC.detail)
       .get('/api/detail/:state', apiC.detail)

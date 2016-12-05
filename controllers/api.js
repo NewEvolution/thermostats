@@ -17,7 +17,7 @@ module.exports = {
     let countyWhere = {};
     const county = req.params.county;
     if (county) {
-      countyWhere = {name: county};
+      countyWhere = {name: {$iLike: county}};
     }
     db.state.findAll({
       where: stateWhere,
@@ -45,7 +45,7 @@ module.exports = {
     let countyWhere = {};
     const county = req.params.county;
     if (county) {
-      countyWhere = {name: county};
+      countyWhere = {name: {$iLike: county}};
     }
     db.state.findAll({
       where: stateWhere,
